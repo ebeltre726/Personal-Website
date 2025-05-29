@@ -1,0 +1,549 @@
+/* IMPORTS */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* GENERAL */
+:root {
+    --biggest-font-size: 2.5rem; 
+    --h1-font-size: 1.5rem; 
+    --h2-font-size: 1.25rem; 
+    --h3-font-size: 1rem; 
+    --normal-font-size: .938rem; 
+    --small-font-size: .813rem; 
+    --smaller-font-size: .75rem; 
+
+    /* Fonts */
+    --nav-font: "Montserrat";
+    --header-font: "Kanit";
+
+    /* New Color Palette */
+    --brightest: #F0DBB6;
+    --brighter: #DAC6A2;
+    --bright: #C4B08D;
+    --mid-color: #978564;
+    --dim: #6B5A3B;
+    --dimmer: #554527;
+    --dimmest: #3E2F12;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    scroll-behavior: smooth; /* Allow for smooth scrolling when clicking links to sections of website */
+    height: 325vh;
+}
+
+body {
+    background-color: var(--brightest); /* Keep background-color defaulted to brightest */
+    height: 325vh;
+}
+
+/* HEADER */
+header {
+    background-color: var(--dimmest); /* Set background color of header */
+    padding: 2%; /* Allow for 2% of the container's spacing around the header for neater appearance */
+    position: fixed; /* Set the header to be fixed at the top of the screen */
+    z-index: 1000; /* Allow the header to always be in front of the content */
+    display: flex; /* Make element a flex container */
+    height: 10vh; /* Set responsive height for header */
+    margin: auto; /* center the header */
+    width: 92%; /* Set width of the header to be 92% of its container(body) */
+    right: 0; /* Allow for margin auto to take place */
+    left: 0; /* Allow for margin auto to take place */
+    align-items: center;
+}
+
+.headerName {
+    font-family: var(--header-font); /* Set the font of the header at the top left of the header */
+    color: var(--brightest); /* Set the color to be the brighest color for the headerName text */
+    align-content: center; /* Align content vertically(flex-item) */
+    font-size: x-large; /* Increase font size */
+    text-align: center; /* Center text horizontally */
+    padding-left: 2%; /* Allow for some space between the left edge of header and the headerName */
+    font-weight: 150; /* Make font weight stronger */
+    width: 35%; /* Set the width of the headerName div */
+    font-weight: 400;
+}
+
+/* NAV */
+.navbar {
+    font-family: var(--nav-font); /* Set font family to nav font */
+    margin-left: auto; /* justify the navigation bar to the right */
+    display: flex; /* Make a navbar a flex container */
+    width: 45%; /* Set explicit width of navbar */
+}
+
+.nav__links {
+    justify-content: flex-end; /* Set flex items within container to be justified to the right end of the container */
+    align-items: center; /* Center items vertically */
+    display: flex; /* Make nav__links(ul) a flex container */
+    width: 100%; /* Set explicit width to keep content from overflowing */
+    gap: 10%;
+}
+
+.navbar li {
+    list-style-type: none; /* Remove <li> bullet points */
+    align-content: center; /* Center content vertically */
+    text-align: center; /* Center text horizontally */
+    width: 100%; /* Allow for spacing between <li> elements */
+}
+
+.navbar a {
+    text-decoration: none; /* Get rid of underline */
+    color: white; /* Set color to white */
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+}
+
+/* HOME SECTION */
+.bg-divider {
+    background-color: var(--dimmer); /* Set background color to lighter brown */
+    position: absolute; /* Position it absolutely at the top of the webpage */
+    width: 100%; /* Set width explicitly for the this element */
+    height: 35%; /* Set height to 35% of the height of the viewport */
+}
+
+#home {
+    padding-top: 12vh; /* Position #home content to be underneath the header by 12vh */
+    position: absolute; /* Position absolutely as the first section of the webpage */
+    margin: auto; /* Center the section */
+    width: 90%; /* Give the section a width of 90% of the viewport width */
+    right: 0; /* Apply for centering */
+    left: 0; /* Apply for centering */
+}
+
+.imageContainer {
+    justify-content: center; /* Center the image within imageContainer vertically */
+    display: flex; /* Set imageContainer as flex container */
+    margin: auto; /* Center the */
+}
+
+.imageContainer img {
+    display: block; /* Treat the img element as block element and not inline */
+    width: 60%; /* Give image a fixed with of 60% of the width of the viewport */
+}
+
+.homeDesc {
+    box-shadow: .2rem .2rem 1rem black; /* Give a shadow in bottom right direction of homeDesc div */
+    background-color: var(--dimmest); /* Set background color as darkest brown */
+    font-family: var(--header-font); /* Set font as the --header-font google font */
+    border-radius: 0 0 2% 2%; /* Apply a rounded border around the bottom left and bottom right of homeDesc */
+    color: var(--brightest); /* Give 'Aspiring' header field a lighter tan color font */
+    text-align: center; /* Align the header text within the div horizontally */
+    font-size: x-large; /* Increase font size */
+    padding-top: 2vh; /* Give padding on between text and top of homeDesc as 2% of the viewport height */
+    line-height: .9; /* give a line-height of .9 */
+    font-weight: 300; /* Make text slightly thicker */
+    height: auto; /* Allow height of homeDesc to be automatically set with the flow of the document */
+    width: 90%; /* Give homeDesc a width of 90% of the viewport */
+    margin: auto; /* Center homeDesc horizontally */
+    padding: 5%; /* Apply padding within homeDesc between the content and edge as 5% of its length */
+}
+
+.descHeader {
+    padding-bottom: 8vh; /* Give padding between description(desc) content and 'My name is' header */
+    font-size: large; /* Set font smaller than larger header, larger than description(desc) font */
+    line-height: 2; /* Apply a line-height of 2 */
+    color: white; /* Set color of text to white */
+}
+
+.desc {
+    font-family: var(--nav-font); /* Set font to same as --nav-font google font */
+    font-size: small; /* Set font as smallest between homeDesc and descHeader */
+    color: white; /* Set font color to white */
+}
+
+/* PROFICIENCIES SECTION */
+#proficiencies {
+    display: flex; /* Set proficiencies container as flex container */
+    position: absolute; /* Remove container from normal document flow and position absolutely */
+    justify-content: center; /* Align container horizontally */
+    top: 110vh; /* Set the position of proficiencies section to start at 110vh */
+    left: 8%; /* Give 8% space between left of viewport */
+    right: 8%; /* Give 8% space between right of viewport */
+    padding-top: 30%; /* Apply 30% padding from initial position for more space */
+    margin: auto; /* Center the section */
+}
+
+.profTable {
+    position: relative;
+    max-width: 500px;
+    width: 100%;
+    background: white;
+    margin: 0 15px;
+    padding: 20px 20px;
+    border-radius: 7px;
+    font-family: var(--header-font);
+    font-size: 1rem;
+    box-shadow: .2rem .2rem 1rem;
+    color: black;
+}
+
+.profHeader {
+    font-size: 1.5rem;
+    font-family: var(--nav-font);
+    font-weight: 700;
+    color: black;
+}
+
+.profTable .prof-box {
+    width: 100%;
+    margin: 25px 0;
+}
+
+.profBox .title {
+    display: block;
+    font-size: 14px;
+    font-weight: 1000;
+    color: white;
+}
+
+.prof-box img {
+    fill: var(--brightest);
+    width: 25%;
+}
+
+.prof-box .prof-bar {
+    height: 8px;
+    width: 100%;
+    border-radius: 6px;
+    margin-top: 6px;
+    background: rgba(0,0,0,0.1);
+}
+
+.prof-box img {
+    width: 3rem;
+    height: 3rem;
+    padding-left: 3%;
+}
+
+.webdevicons {
+    display: grid;
+    position: static;
+    overflow: hidden;
+    grid-template-columns: 10% 10% 10%;
+}
+
+.webdevicons img {
+    width: 100%;
+}
+
+.prof-bar .prof-per {
+    position: relative;
+    display: block;
+    height: 100%;
+    width: 90%;
+    border-radius: 6px;
+    background: var(--dimmest);
+    animation: progress 0.4s ease-in-out forwards;
+}
+
+.prof-per.ciscios {
+    width: 85%;
+    animation-delay: 0.1s;
+}
+.prof-per.win {
+    width: 95%;
+    animation-delay: 0.15s;
+}
+.prof-per.lin {
+    width: 85%;
+    animation-delay: 0.2s;
+}
+.prof-per.webdev {
+    width: 80%;
+    animation-delay: 0.25s;
+}
+.prof-per.azure {
+    width: 60%;
+    animation-delay: 0.3s;
+}
+
+@keyframes progress {
+    0% {
+        width: 0;
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+.prof-per .tooltip {
+    position: absolute;
+    right: -14px;
+    top: -28px;
+    font-size: 9px;
+    font-weight: 500;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: #161616;
+    z-index: 1;
+}
+
+.tooltip::before {
+    content: '';
+    position: absolute;
+    left: 34%;
+    bottom: -10px;
+    height: 10px;
+    width: 10px;
+    z-index: -1;
+    background-color: #161616;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+/* CONTACT SECTION */
+#contact {
+    background-color: var(--dimmest);
+    color: var(--brightest);
+    position: absolute;
+    width: 80%;
+    top: 250vh;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-bottom: 20%;
+    border-radius: 10px;
+    border-color: rgb(71, 39, 0);
+    box-shadow: .2rem .2rem 1rem black;
+}
+
+h1 {
+    font-family: var(--header-font);
+    color: white;
+    font-weight: 400;
+    padding-top: 2vh;
+    text-align: center;
+}
+
+input {
+    background-color: white;
+    display: block;
+    margin: auto;
+    margin-top: 2vh;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 16px 16px;
+    font-family: var(--nav-font);
+}
+
+textarea {
+    width: 70%;
+    display: block;
+    margin: auto;
+    margin-bottom: 25px;
+    border-radius: 10px;
+}
+
+button {
+    background-color: var(--brightest);
+    border-radius: 20px;
+    border-color: black;
+    font-size: 1rem;
+    padding: 10px 18px;
+    text-align: center;
+    display: flex;
+    margin: auto;
+    margin-bottom: 7%;
+}
+
+button:hover {
+    opacity: 80%;
+    cursor: pointer;
+}
+
+/* INTERSECTION OBSERVER */
+section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 0%;
+    transition: width .4s ease-in-out;
+    z-index: 1000;
+    background-image: linear-gradient(var(--brightest), var(--dimmest));
+    opacity: 90%;
+    backdrop-filter: blur(10px);
+    box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;;
+}
+
+.sidebar.expanded {
+    width: 40%;
+}
+
+.hamburger {
+    padding-right: 10%;
+}
+
+.ex {
+    padding-top: 3vh;
+    padding-left: 3vh;
+}
+
+.ex img {
+    width: 25px;
+    filter: invert(black);
+}
+
+.ex img:hover, .hamburger img:hover {
+    cursor: pointer;
+}
+
+.hamburger img {
+    width: 25px;
+    padding-right: 5%;
+    filter: invert(1);
+    display: none;
+}
+
+footer {
+    width: 20rem;
+    font-family: var(--header-font);
+    color: var(--brightest);
+    font-size: x-large;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 307.5vh;
+    text-align: center;
+    background-color: var(--dimmest);
+    border-radius: 1rem;
+    padding: 2%;
+}
+
+.socialswrap {
+    display: flex;
+    flex-direction: row;
+    padding-top: 1rem;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.socialswrap img {
+    width: 2rem;
+}
+
+.socialswrap img:hover {
+    opacity: .6;
+}
+
+
+/* When viewport is 800px wide or less, apply this styling */
+/* Get rid of navbar ul elements and replace with hamburger sidebar icon */
+@media (max-width: 768px) {
+    .hamburger img {
+        display: block;
+    }
+
+    .navbar li {
+        display: none;
+    }
+
+    .sidebar li {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        padding-left: 3vh;
+        padding-top: 10vh;
+    }
+
+    .sidebar a { 
+        color: var(--dimmest);
+        font-weight: 600;
+    }
+}
+
+/* When viewport is greater than/equal to 480px, apply this styling */
+@media (min-width: 480px) {
+    .imageContainer img {
+        width: 20rem;
+    }
+
+    .homeDesc {
+        width: 25rem;
+        padding: 2rem;
+    }
+
+    #contact {
+        width: 25rem;
+    }
+}
+
+/* When viewport is greater than/equal to 1280px, apply this styling */
+/* Styling for desktops/larger screens */
+@media (min-width: 1280px) {
+
+    #home {
+        padding-top: 20vh;
+        height: 120vh;
+    }
+    .homeWrapper {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .imageContainer img {
+        width: 35rem;
+    }
+
+    .homeDesc {
+        width: 40rem;
+    }
+
+    #proficiencies {
+        top: 75vh;
+    }
+
+    #contact {
+        top: 225vh;
+    }
+
+    footer {
+        top: 280vh;
+    }
+
+    html, body {
+        height: 300vh;
+    }
+}
+
+@media (min-width: 1500px) {
+    #proficiencies {
+        top: 75vh;
+    }
+
+    .homeDesc {
+        width: 50rem;
+    }
+}
