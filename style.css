@@ -54,46 +54,73 @@ header {
     position: fixed; 
     z-index: 1000; 
     display: flex; 
-    height: 10vh; 
-    padding: 2%; 
+    height: 10vh; /* This is fine if it is enough for the nav */
+    padding: 0 2rem; 
     width: 92%;
     left: 50%;
     transform: translateX(-50%);
 }
 
+/* HEADER NAME */
 .headerName {
     font-family: var(--header-font); 
     color: var(--brightest); 
-    align-content: center; 
     font-size: x-large; 
+    display: flex;
     text-align: center; 
-    padding-left: 2%; 
     font-weight: 500;
-    width: 35%; 
+}
+
+    /*    font-family: var(--header-font); 
+    color: var(--brightest); 
+    font-size: x-large; 
+    display: flex;
+    text-align: center; 
+    font-weight: 500;
+    flex: 1 1 0; */
+
+.headerName a {
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--brightest);
 }
 
 /* NAV */
 nav {
-    font-family: var(--nav-font); 
-    display: flex; 
+    display: flex;
+    justify-content: flex-end;
+    min-width: 0;
 }
 
 .nav__links {
-    margin-left: auto;
-    gap: 2rem;
-    align-items: center; 
-    display: flex; 
-}
-
-nav li {
-    list-style-type: none; 
-    align-items: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    flex: 0 1 auto;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
 }
 
-nav a {
+.nav__links li {
+    display: none;
+    list-style-type: none;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: calc(1 / 3);
+    max-width: 100%;
+    min-width: 0;
+}
+
+.nav__links a {
+    font-family: var(--nav-font); 
+    display: block;
     text-decoration: none; 
-    color: white; 
+    text-align: center;
+    justify-content: center;
+    color: white;
+    white-space: normal;
 }
 
 nav a:hover {
@@ -108,28 +135,34 @@ nav a:focus {
 
 /* HOME SECTION */
 #home {
-    padding-top: 23%;
+    padding-top: 11vh;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .homeWrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     gap: 1%;
-    margin: auto;
-    width: 26rem;
+    width: 90%;
+    max-width: 400px;
 }
 
 .imageContainer {
-    justify-content: center; 
-    margin: auto;
-    display: flex; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1 0;
     margin-bottom: 1%;
 }
 
 .imageContainer img {
     display: block; 
-    max-width: 100%; 
+    max-width: 100%;
 }
 
 .homeDesc {
@@ -139,26 +172,24 @@ nav a:focus {
     color: var(--brightest); 
     text-align: center; 
     align-content: center;
-    font-size: x-large; 
+    font-size: var(--h2-font-size); 
     padding-top: 2vh; 
     font-weight: 300; 
     line-height: .9; 
-    height: auto; 
     margin: auto; 
     padding: 5%; 
-    width: 26rem; 
 }
 
 .descHeader {
     padding-bottom: 8vh; 
-    font-size: large;
+    font-size: var(--h3-font-size);
     color: white; 
     line-height: 2; 
 }
 
 .desc {
     font-family: var(--nav-font); 
-    font-size: small; 
+    font-size: var(--smaller-font-size); 
     color: white; 
 }
 
@@ -181,7 +212,7 @@ nav a:focus {
     font-size: 1rem;
     color: black;
     margin: 0 15px;
-    width: 100%;
+    width: 85%;
 }
 
 .profHeader {
@@ -302,7 +333,7 @@ nav a:focus {
     border-color: rgb(71, 39, 0);
     color: var(--brightest);
     border-radius: 10px;
-    max-width: 23rem;
+    max-width: 85%;
     margin-top: 60%;
     margin-left: auto;
     margin-right: auto;
@@ -377,7 +408,7 @@ section.visible {
     justify-content: flex-start;
     flex-direction: column;
     position: fixed;
-    display: none;
+    display: flex;
     z-index: 1000;
     height: 100vh;
     opacity: 90%;
@@ -388,10 +419,13 @@ section.visible {
 
 .sidebar li {
     list-style-type: none;
+    flex: 0 1 100px;
+    padding-left: 10%;
 }
 
 .sidebar a {
     text-decoration: none;
+    color: var(--dimmest);
 }
 
 .sidebar a:hover {
@@ -405,11 +439,13 @@ section.visible {
 
 .hamburger {
     padding-right: 10%;
+    display: block;
 }
 
 .ex {
     padding-left: 3vh;
     padding-top: 3vh;
+    padding-bottom: 5vh;
 }
 
 .ex img {
@@ -424,11 +460,18 @@ section.visible {
 .hamburger img {
     padding-right: 5%;
     filter: invert(1);
-    display: none;
+    display: block;
     width: 25px;
 }
 
 /* FOOTER */
+#footer {
+    height: 25vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 footer {
     background-color: var(--dimmest);
     font-family: var(--header-font);
@@ -436,12 +479,12 @@ footer {
     border-radius: 1rem;
     font-size: x-large;
     text-align: center;
-    width: 20rem;
+    width: 80%;
     padding: 2%;
-    margin-top: 20%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .socialswrap {
@@ -461,63 +504,69 @@ footer {
 }
 
 /* MEDIA QUERIES */
-@media (max-width: 450px) {
+
+@media (min-width: 400px) {
+
+    #home {
+        padding-top: 10vh;
+        height: 95vh;
+    }
     .homeDesc {
-        width: 21rem;
+        font-size: var(--h1-font-size);
+    }
+
+    .descHeader {
+        font-size: var(--h2-font-size);
+    }
+
+    .desc {
+
+    }
+}
+
+@media (min-width: 1024px) {
+
+    #home {
+        height: 75vh;
     }
 
     .homeWrapper {
-        width: 21rem;
+        flex-direction: row;
+        flex: 1 1 0;
+        max-width: 90%;
+        height: 100%;
     }
-    
+
     .imageContainer {
-        width: 21rem;
+        flex: 0 1 45%;
+        margin: 0;
     }
 
-    #contact {
-        width: 21rem;
+    .imageContainer img {
+        object-fit: cover;
     }
 
-    .profTable {
-        width: 21rem;
+    .homeDesc {
+        flex: 1 0 45%;
+        font-size: var(--h1-font-size);
+        height: 100%;
     }
 
-    footer {
-        width: 18rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .hamburger img {
-        display: block;
+    .descHeader {
+        padding: 5vh 0;
+        font-size: var(--normal-font-size);
     }
 
-    nav li {
-        display: none;
-    }
-
-    .sidebar {
-        display: flex;
-    }
-
-    .sidebar li {
-        flex-direction: column;
-        padding-left: 3vh;
-        padding-top: 10vh;
-        text-align: left;
-        display: flex;
-    }
-
-    .sidebar a { 
-        color: var(--dimmest);
-        font-weight: 600;
+    .desc {
+        font-size: var(--small-font-size);
     }
 }
-
+/*
 @media (min-width: 768px) {
     #home {
         padding-top: 15%;
     }
+    
     .homeDesc {
         padding-top: 3%;
     }
@@ -584,9 +633,16 @@ footer {
         margin-top: 10%;
         margin-bottom: 5%;
     }
+
+    #contact h1 {
+        font-size: var(--h1-font-size);
+    }
 }
 
 @media (min-width: 1500px) {
+    .headerName {
+        font-size: var(--biggest-font-size);
+    }
     .homeDesc {
         font-size: var(--biggest-font-size);
     }
@@ -602,7 +658,7 @@ footer {
     .desc {
         font-size: medium;
     }
-}
+}*/
 
 /* ERROR.HTML STYLING */
 .errorBox {
