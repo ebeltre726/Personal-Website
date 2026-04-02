@@ -1,5 +1,6 @@
 /* IMPORTS */
 @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Serif+Display&display=swap');
 
 /* GENERAL */
 :root {
@@ -157,6 +158,155 @@ header {
 }
 
 /* PROFICIENCIES SECTION */
+
+#proficiencies {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.prof-section {
+background: #f5f0e8;
+padding: 48px 32px;
+font-family: 'IBM Plex Mono', monospace;
+min-height: 100vh;
+}
+
+.prof-header-row {
+display: flex;
+align-items: baseline;
+gap: 16px;
+margin-bottom: 36px;
+}
+
+.prof-title {
+font-family: 'DM Serif Display', serif;
+font-size: 28px;
+font-weight: 400;
+color: #2a1f14;
+letter-spacing: -0.5px;
+}
+
+.prof-rule {
+flex: 1;
+height: 1px;
+background: linear-gradient(to right, #8b6f47, transparent);
+opacity: 0.4;
+}
+
+.prof-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 20px;
+}
+
+.prof-card {
+background: #fdf8f0;
+border: 1px solid #d4b896;
+border-radius: 8px;
+padding: 18px 20px 20px;
+position: relative;
+overflow: hidden;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.prof-card::before {
+content: '';
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+background: #8b6f47;
+opacity: 0;
+transition: opacity 0.2s;
+}
+
+.prof-card:hover {
+border-color: #8b6f47;
+box-shadow: 0 2px 12px rgba(139, 111, 71, 0.12);
+}
+
+.prof-card:hover::before {
+opacity: 1;
+}
+
+.card-top {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 14px;
+}
+
+.card-icon-name {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.card-icon {
+width: 28px;
+height: 28px;
+object-fit: contain;
+opacity: 0.85;
+}
+
+.card-icon-group {
+display: flex;
+gap: 6px;
+align-items: center;
+}
+
+.card-icon-group .card-icon {
+width: 22px;
+height: 22px;
+}
+
+.card-name {
+font-size: 13px;
+font-weight: 500;
+color: #2a1f14;
+letter-spacing: 0.02em;
+text-transform: uppercase;
+font-size: 11px;
+}
+
+.card-pct {
+font-family: 'DM Serif Display', serif;
+font-size: 22px;
+color: #8b6f47;
+letter-spacing: -1px;
+}
+
+.bar-track {
+height: 4px;
+background: #e8ddd0;
+border-radius: 2px;
+overflow: hidden;
+}
+
+.bar-fill {
+height: 100%;
+border-radius: 2px;
+background: #8b6f47;
+width: 0%;
+transition: width 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.bar-fill.animated {
+width: var(--target-width);
+}
+
+.bar-fill.high { background: #5a3d1e; }
+.bar-fill.mid  { background: #8b6f47; }
+.bar-fill.low  { background: #b89a72; }
+
+.card-category {
+font-size: 9px;
+color: #a0866a;
+text-transform: uppercase;
+letter-spacing: 0.1em;
+margin-top: 8px;
+}
+
+/*
 #proficiencies {
     justify-content: center; 
     display: flex; 
@@ -287,7 +437,7 @@ header {
     width: 10px;
     z-index: -1;
     left: 34%;
-}
+} */
 
 /* CONTACT SECTION */
 #contact {

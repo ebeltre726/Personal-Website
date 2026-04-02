@@ -1,8 +1,17 @@
+let barsAnimated = false;
+
 const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
             observer.unobserve(entry.target);
+            if (entry.target.querySelector('#profGrid') && !barsAnimated) {
+                barsAnimated = true;
+                entry.target.querySelectorAll('.bar-fill').forEach((bar, i) => {
+                bar.style.transitionDelay = `${i * 0.08}s`;
+                setTimeout(() => bar.classList.add('animated'), 400); // wait for section fade-in
+                });
+            }
         } else {
             entry.target.classList.remove('visible');
         }
@@ -15,13 +24,13 @@ document.querySelectorAll('section').forEach(section => {
 
 function showSidebar(){
     const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.toggle('expanded');
+    sidebar.classList.add('expanded');
     sidebar.style.borderLeft = 'solid rgba(0, 0, 0, 1)';
 }
 
 function hideSidebar(){
     const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.toggle('expanded');
+    sidebar.classList.remove('expanded');
     sidebar.style.borderLeft = 'none';
 }
 

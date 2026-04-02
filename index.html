@@ -17,10 +17,16 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#proficiencies">Proficiencies</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <div class="hamburger" onclick="showSidebar()"><img src="hamburger.png"></div>
             </ul>
-            <ul class="sidebar">
-                <div class="ex" onclick="hideSidebar()"><img src="close.png"></div>
+            <button class="hamburger" onclick="showSidebar()" aria-label="Open navigation menu">
+                <img src="hamburger.png" alt="">
+            </button>
+        </nav>
+        <nav class="sidebar" aria-hidden="true">
+            <button class="ex" onclick="hideSidebar()" aria-label="Close navigation menu">
+                <img src="close.png" alt="">
+            </button>
+            <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#proficiencies">Proficiencies</a></li>
                 <li><a href="#contact">Contact</a></li>
@@ -32,9 +38,10 @@
         <div class="bg-divider"></div>
         <div class="homeWrapper">
             <div class="imageContainer">
-            <img src="portrait1.png" alt="portrait image of Emmanuel Beltre">
+                <img src="portrait1.png" alt="Portrait of Emmanuel Beltre">
             </div>
-            <div class="homeDesc">Aspiring Cloud, Networking, and Systems Administrator<br><br>
+            <div class="homeDesc">
+                Aspiring Cloud, Networking, and Systems Administrator<br><br>
                 <span class="descHeader">My name is Emmanuel Beltre</span><br>
                 <span class="desc">I am a 24 year old Information Technology major, working part-time
                     as a Systems Administrator. I have extensive knowledge of Cloud technologies, mainly AWS,
@@ -46,85 +53,129 @@
         </div>
     </section>
 
-    <section id="proficiencies">
-        <div class="profTable">
-            <span class="profHeader">Proficiencies</span><hr>
-            <div class="prof-box">
-                <span class="title">AWS</span>
-                <img src="icons8-aws.svg" alt="icon for aws">
-                <div class="prof-bar">
-                    <span class="prof-per aws">
-                        <span class="tooltip">90%</span>
-                    </span>
-                </div>
+        <section id="proficiencies">
+            <div class="prof-section">
+      <div class="prof-header-row">
+        <span class="prof-title">Proficiencies</span>
+        <div class="prof-rule"></div>
+      </div>
+
+      <div class="prof-grid" id="profGrid">
+
+        <div class="prof-card">
+          <div class="card-top">
+            <div class="card-icon-name">
+              <img class="card-icon" src="https://img.icons8.com/color/48/amazon-web-services.png" alt="AWS">
+              <span class="card-name">AWS</span>
             </div>
-            <div class="prof-box">
-                <span class="title">Cisco IOS</span>
-                <img src="cisco (1).png" alt="icon for cisco ios"> <!-- Icon by Freepik -->
-                <div class="prof-bar">
-                    <span class="prof-per ciscios">
-                        <span class="tooltip">85%</span>
-                    </span>
-                </div>
-            </div>
-            <div class="prof-box">
-                <span class="title">Windows</span>
-                <img src="windows.png" alt="icon for windows operating system">
-                <div class="prof-bar">
-                    <span class="prof-per win">
-                        <span class="tooltip">95%</span>
-                    </span>
-                </div>
-            </div><div class="prof-box">
-                <span class="title">Linux</span>
-                <img src="linux-platform.png" alt="icon for linux"> <!-- Icon by Freepik -->
-                <div class="prof-bar">
-                    <span class="prof-per lin">
-                        <span class="tooltip">85%</span>
-                    </span>
-                </div>
-            </div><div class="prof-box">
-                <span class="title">HTML, <br>CSS, <br>JavaScript</span>
-                <div class="webdevicons">
-                <img src="html.png" alt="icon for html"> <!-- Icon by Freepik -->
-                <img src="css-3.png" alt="icon for css"> <!-- Icon by Pixel perfect -->
-                <img src="java-script.png" alt="icon for javascript"> <!-- Icon by edt.im -->
-                </div>
-                <div class="prof-bar">
-                    <span class="prof-per webdev">
-                        <span class="tooltip">80%</span>
-                    </span>
-                </div>
-            </div><div class="prof-box">
-                <span class="title">Azure</span>
-                <img src="icons8-azure.svg" alt="icon for azure">
-                <div class="prof-bar">
-                    <span class="prof-per azure">
-                        <span class="tooltip">60%</span>
-                    </span>
-                </div>
-            </div>
+            <span class="card-pct">90%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill high" style="--target-width:90%"></div></div>
+          <div class="card-category">Cloud Infrastructure</div>
         </div>
+
+        <div class="prof-card">
+          <div class="card-top">
+            <div class="card-icon-name">
+              <img class="card-icon" src="https://img.icons8.com/color/48/windows-10.png" alt="Windows">
+              <span class="card-name">Windows</span>
+            </div>
+            <span class="card-pct">95%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill high" style="--target-width:95%"></div></div>
+          <div class="card-category">Operating System</div>
+        </div>
+
+        <div class="prof-card">
+          <div class="card-top">
+            <div class="card-icon-name">
+              <img class="card-icon" src="https://img.icons8.com/color/48/cisco.png" alt="Cisco IOS">
+              <span class="card-name">Cisco IOS</span>
+            </div>
+            <span class="card-pct">85%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill mid" style="--target-width:85%"></div></div>
+          <div class="card-category">Networking</div>
+        </div>
+
+        <div class="prof-card">
+          <div class="card-top">
+            <div class="card-icon-name">
+              <img class="card-icon" src="https://img.icons8.com/color/48/linux--v1.png" alt="Linux">
+              <span class="card-name">Linux</span>
+            </div>
+            <span class="card-pct">85%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill mid" style="--target-width:85%"></div></div>
+          <div class="card-category">Operating System</div>
+        </div>
+
+        <div class="prof-card">
+          <div class="card-top">
+            <div class="card-icon-name">
+              <div class="card-icon-group">
+                <img class="card-icon" src="https://img.icons8.com/color/48/html-5--v1.png" alt="HTML">
+                <img class="card-icon" src="https://img.icons8.com/color/48/css3.png" alt="CSS">
+                <img class="card-icon" src="https://img.icons8.com/color/48/javascript--v1.png" alt="JS">
+              </div>
+              <span class="card-name">HTML / CSS / JS</span>
+            </div>
+            <span class="card-pct">80%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill mid" style="--target-width:80%"></div></div>
+          <div class="card-category">Web Development</div>
+        </div>
+
+        <div class="prof-card">
+          <div class="card-top">
+            <div class="card-icon-name">
+              <img class="card-icon" src="https://img.icons8.com/color/48/azure-1.png" alt="Azure">
+              <span class="card-name">Azure</span>
+            </div>
+            <span class="card-pct">60%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill low" style="--target-width:60%"></div></div>
+          <div class="card-category">Cloud Infrastructure</div>
+        </div>
+
+      </div>
+    </div>
     </section>
+
     <section id="contact">
         <h1>Contact Me</h1>
         <form id="contactForm">
-        <input id="first" type="text" name="first" placeholder="First Name" autocomplete="off" required>
-        <input id="last" type="text" name="last" placeholder="Last Name" autocomplete="off" required>
-        <input id="email" type="text" name="email" placeholder="Email Address" autocomplete="off" required>
-        <textarea id="message" rows="5" cols="60" name="message" placeholder="Enter Text" autocomplete="off" required></textarea>
-        <button type="submit">Send Message</button>
+            <label for="first" class="sr-only">First Name</label>
+            <input id="first" type="text" name="first" placeholder="First Name" autocomplete="given-name" required>
+
+            <label for="last" class="sr-only">Last Name</label>
+            <input id="last" type="text" name="last" placeholder="Last Name" autocomplete="family-name" required>
+
+            <label for="email" class="sr-only">Email Address</label>
+            <input id="email" type="email" name="email" placeholder="Email Address" autocomplete="email" required>
+
+            <label for="message" class="sr-only">Message</label>
+            <textarea id="message" rows="5" name="message" placeholder="Enter your message" autocomplete="off" required></textarea>
+
+            <button type="submit">Send Message</button>
         </form>
     </section>
+
     <footer>
         Follow Me
         <ul class="socialswrap">
-            <a href="https://x.com/emman726" target="_blank"><img src="xicon.png" alt="icon for x"></a><!-- Image from Freepik -->
-            <a href="https://www.github.com/ebeltre726" target="_blank"><img src="github.png"></a><!-- Image from Pixel Perfect -->
-            <!--<a href="ytlink"><img src="yt.png"></a>-->
-            <a href="https://www.linkedin.com/in/emmanuel-beltre-27a1a8210/?trk=public-profile-join-page" target="_blank"><img src="linkedin.png" alt="icon for linkedin"></a><!-- Image from Riajulislam -->
+            <li><a href="https://x.com/emman726" target="_blank" rel="noopener noreferrer">
+                <img src="xicon.png" alt="X (Twitter)">
+            </a></li>
+            <li><a href="https://www.github.com/ebeltre726" target="_blank" rel="noopener noreferrer">
+                <img src="github.png" alt="GitHub">
+            </a></li>
+            <li><a href="https://www.linkedin.com/in/emmanuel-beltre-27a1a8210/" target="_blank" rel="noopener noreferrer">
+                <img src="linkedin.png" alt="LinkedIn">
+            </a></li>
         </ul>
     </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
