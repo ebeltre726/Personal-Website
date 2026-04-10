@@ -12,6 +12,12 @@ const observer = new IntersectionObserver((entries, observer) => {
                 setTimeout(() => bar.classList.add('animated'), 400); // wait for section fade-in
                 });
             }
+
+            if (entry.target.querySelector('.work-grid')) {
+                entry.target.querySelectorAll('.project-card').forEach((card, i) => {
+                    setTimeout(() => card.classList.add('visible'), i * 100);
+                });
+            }
         } else {
             entry.target.classList.remove('visible');
         }
