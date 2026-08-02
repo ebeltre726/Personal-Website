@@ -343,6 +343,7 @@ header {
     color: white; 
 }
 
+
 /* WORK SECTION */
 .work-section {
     padding: 4rem 1.5rem;
@@ -590,6 +591,7 @@ header {
     margin: 8rem 0;
     display: flex;
     justify-content: center;
+    height: 100vh;
 }
 
 .prof-section {

@@ -13,7 +13,7 @@ variable "environment" {
 variable "domain_name" {
   description = "Primary domain name for the site"
   type        = string
-  default     = "example.com"
+  default     = "ebeltre.com"
 }
 
 variable "hostinger_zone_id" {
@@ -38,6 +38,19 @@ variable "emailjs_public_key" {
   description = "EmailJS public key"
   type        = string
   default     = ""
+}
+
+variable "emailjs_private_key" {
+  description = "EmailJS private key"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "allowed_origin" {
+  description = "Allowed origins for Lambda CORS responses"
+  type        = string
+  default     = "https://ebeltre.com,https://www.ebeltre.com"
 }
 
 variable "mime_types" {

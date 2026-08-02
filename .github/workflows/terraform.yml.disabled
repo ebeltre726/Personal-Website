@@ -26,10 +26,12 @@ jobs:
     env:
       AWS_REGION: us-east-1
       TF_VAR_domain_name: ${{ vars.DOMAIN_NAME }}
-      TF_VAR_hostinger_zone_id: ${{ vars.HOSTINGER_ZONE_ID }}
+      TF_VAR_hostinger_zone_id: ${{ secrets.HOSTINGER_ZONE_ID }}
       TF_VAR_emailjs_service_id: ${{ vars.EMAILJS_SERVICE_ID }}
       TF_VAR_emailjs_template_id: ${{ vars.EMAILJS_TEMPLATE_ID }}
       TF_VAR_emailjs_public_key: ${{ vars.EMAILJS_PUBLIC_KEY }}
+      TF_VAR_emailjs_private_key: ${{ secrets.EMAILJS_PRIVATE_KEY }}
+      TF_VAR_allowed_origin: ${{ vars.ALLOWED_ORIGIN }}
 
     steps:
       - name: Checkout code

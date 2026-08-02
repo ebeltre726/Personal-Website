@@ -10,6 +10,10 @@ terraform {
       source  = "hashicorp/archive"
       version = "~> 2.0"
     }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.0"
+    }
   }
 }
 
@@ -18,17 +22,32 @@ provider "aws" {
 }
 
 locals {
-  app_name    = "personal-website"
-  bucket_name = lower("${local.app_name}-${var.environment}-site")
-  origin_id   = "s3-origin"
-  lambda_name = "contact-form-handler"
-  api_name    = "contact-form-api"
+  app_name           = "Personal-Website"
+  bucket_name        = "aws-beltre-portfolio-bucket"
+  origin_id          = "E1PYOLXQ1UD25M"
+  lambda_name        = "sendContactEmail"
+  api_name           = "aws-portfolio-contact-api"
+  project_name       = "portfolio"
+  ssm_parameter_name = "/${local.project_name}/emailjs/private-key"
+}
+
+resource "null_resource" "lambda_dependencies" {
+  triggers = {
+    index_hash   = filesha256("${path.module}/lambda/contact-form/index.js")
+    package_hash = filesha256("${path.module}/lambda/contact-form/package.json")
+  }
+
+  provisioner "local-exec" {
+    command = "npm install --prefix ${path.module}/lambda/contact-form --omit=dev"
+  }
 }
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "${path.module}/lambda/contact-form/index.js"
+  source_dir  = "${path.module}/lambda/contact-form"
   output_path = "${path.module}/lambda/contact-form/index.zip"
+
+  depends_on = [null_resource.lambda_dependencies]
 }
 
 resource "aws_s3_bucket" "site" {
@@ -188,6 +207,18 @@ resource "aws_acm_certificate_validation" "site" {
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 }
 
+resource "aws_ssm_parameter" "emailjs_private_key" {
+  name        = local.ssm_parameter_name
+  description = "EmailJS private key for the contact form Lambda"
+  type        = "SecureString"
+  value       = var.emailjs_private_key
+
+  tags = {
+    Environment = var.environment
+    Project     = local.app_name
+  }
+}
+
 resource "aws_lambda_function" "contact_form" {
   filename         = data.archive_file.lambda.output_path
   function_name    = local.lambda_name
@@ -199,9 +230,11 @@ resource "aws_lambda_function" "contact_form" {
 
   environment {
     variables = {
-      EMAILJS_SERVICE_ID  = var.emailjs_service_id
-      EMAILJS_TEMPLATE_ID = var.emailjs_template_id
-      EMAILJS_PUBLIC_KEY  = var.emailjs_public_key
+      EMAILJS_SERVICE_ID                 = var.emailjs_service_id
+      EMAILJS_TEMPLATE_ID                = var.emailjs_template_id
+      EMAILJS_PUBLIC_KEY                 = var.emailjs_public_key
+      EMAILJS_PRIVATE_KEY_PARAMETER_NAME = aws_ssm_parameter.emailjs_private_key.name
+      ALLOWED_ORIGIN                     = var.allowed_origin
     }
   }
 }
@@ -224,6 +257,22 @@ resource "aws_iam_role" "lambda_exec" {
 resource "aws_iam_role_policy_attachment" "lambda_basic" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy" "lambda_ssm" {
+  name = "${local.lambda_name}-ssm-read"
+  role = aws_iam_role.lambda_exec.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = ["ssm:GetParameter"]
+        Resource = [aws_ssm_parameter.emailjs_private_key.arn]
+      }
+    ]
+  })
 }
 
 resource "aws_apigatewayv2_api" "contact_form" {
