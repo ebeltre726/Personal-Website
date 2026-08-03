@@ -1,6 +1,14 @@
 terraform {
   required_version = ">= 1.5.0"
 
+  backend "s3" {
+    bucket         = "aws-beltre-portfolio-tfstate"
+    key            = "terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "aws-beltre-portfolio-tf-locks"
+    encrypt        = true
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -33,19 +41,19 @@ locals {
 
 resource "null_resource" "lambda_dependencies" {
   triggers = {
-    index_hash   = filesha256("${path.module}/lambda/contact-form/index.js")
-    package_hash = filesha256("${path.module}/lambda/contact-form/package.json")
+    index_hash   = filesha256("${path.module}/../lambda/contact-form/index.js")
+    package_hash = filesha256("${path.module}/../lambda/contact-form/package.json")
   }
 
   provisioner "local-exec" {
-    command = "npm install --prefix ${path.module}/lambda/contact-form --omit=dev"
+    command = "npm install --prefix ${path.module}/../lambda/contact-form --omit=dev"
   }
 }
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_dir  = "${path.module}/lambda/contact-form"
-  output_path = "${path.module}/lambda/contact-form/index.zip"
+  source_dir  = "${path.module}/../lambda/contact-form"
+  output_path = "${path.module}/../lambda/contact-form/index.zip"
 
   depends_on = [null_resource.lambda_dependencies]
 }
@@ -148,7 +156,8 @@ resource "aws_cloudfront_distribution" "site" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.site.arn
+    acm_certificate_arn = var.acm_certificate_arn != "" ? var.acm_certificate_arn : aws_acm_certificate.site[0].arn
+
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
@@ -172,7 +181,15 @@ resource "aws_cloudfront_distribution" "site" {
   }
 }
 
+data "aws_acm_certificate" "site" {
+  domain   = var.domain_name
+  statuses = ["ISSUED"]
+  most_recent = true
+}
+
 resource "aws_acm_certificate" "site" {
+  count = length(data.aws_acm_certificate.site.id) > 0 ? 0 : 1
+
   domain_name       = var.domain_name
   validation_method = "DNS"
 
@@ -187,8 +204,8 @@ resource "aws_acm_certificate" "site" {
 }
 
 resource "aws_route53_record" "cert_validation" {
-  for_each = {
-    for dvo in aws_acm_certificate.site.domain_validation_options : dvo.domain_name => {
+  for_each = length(data.aws_acm_certificate.site.id) > 0 ? {} : {
+    for dvo in aws_acm_certificate.site[0].domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
@@ -203,7 +220,9 @@ resource "aws_route53_record" "cert_validation" {
 }
 
 resource "aws_acm_certificate_validation" "site" {
-  certificate_arn         = aws_acm_certificate.site.arn
+  count = length(data.aws_acm_certificate.site.id) > 0 ? 0 : 1
+
+  certificate_arn         = aws_acm_certificate.site[0].arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 }
 
@@ -234,7 +253,7 @@ resource "aws_lambda_function" "contact_form" {
       EMAILJS_TEMPLATE_ID                = var.emailjs_template_id
       EMAILJS_PUBLIC_KEY                 = var.emailjs_public_key
       EMAILJS_PRIVATE_KEY_PARAMETER_NAME = aws_ssm_parameter.emailjs_private_key.name
-      ALLOWED_ORIGIN                     = var.allowed_origin
+      ALLOWED_ORIGINS                    = var.allowed_origins
     }
   }
 }

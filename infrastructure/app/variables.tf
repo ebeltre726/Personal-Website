@@ -16,12 +16,6 @@ variable "domain_name" {
   default     = "ebeltre.com"
 }
 
-variable "hostinger_zone_id" {
-  description = "Route53 hosted zone ID for the domain (Hostinger-managed DNS zone)"
-  type        = string
-  default     = ""
-}
-
 variable "emailjs_service_id" {
   description = "EmailJS service ID"
   type        = string
@@ -47,10 +41,16 @@ variable "emailjs_private_key" {
   sensitive   = true
 }
 
-variable "allowed_origin" {
+variable "allowed_origins" {
   description = "Allowed origins for Lambda CORS responses"
   type        = string
   default     = "https://ebeltre.com,https://www.ebeltre.com"
+}
+
+variable "acm_certificate_arn" {
+  description = "Existing ACM certificate ARN. If empty, Terraform creates a new certificate."
+  type        = string
+  default     = ""
 }
 
 variable "mime_types" {

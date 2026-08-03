@@ -1,5 +1,5 @@
 {
-  "name": "contact-form-lambda",
+  "name": "aws-portfolio-contact-api",
   "version": "1.0.0",
   "private": true,
   "dependencies": {

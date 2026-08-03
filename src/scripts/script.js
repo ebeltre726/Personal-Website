@@ -1,3 +1,4 @@
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 let barsAnimated = false;
 
 const observer = new IntersectionObserver((entries, observer) => {
@@ -71,7 +72,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
     };
 
     try {
-        const response = await fetch('https://i4ps8dx5qc.execute-api.us-east-1.amazonaws.com/contact', {
+        const response = await fetch(`${API_BASE_URL}/contact`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData),

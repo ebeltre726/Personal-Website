@@ -3,7 +3,7 @@ const { SSMClient, GetParameterCommand } = require('@aws-sdk/client-ssm');
 const ssmClient = new SSMClient({});
 let privateKeyCache = null;
 
-const REQUIRED_ENV_VARS = ['EMAILJS_SERVICE_ID', 'EMAILJS_TEMPLATE_ID', 'EMAILJS_PUBLIC_KEY', 'ALLOWED_ORIGIN'];
+const REQUIRED_ENV_VARS = ['EMAILJS_SERVICE_ID', 'EMAILJS_TEMPLATE_ID', 'EMAILJS_PUBLIC_KEY', 'ALLOWED_ORIGINS'];
 
 function validateRequiredEnvironment() {
   const missing = REQUIRED_ENV_VARS.filter((name) => !process.env[name]);
@@ -64,7 +64,7 @@ function buildResponse(statusCode, body, origin, headers = {}) {
 }
 
 function getAllowedOrigin(requestOrigin = '') {
-  const configuredOrigins = (process.env.ALLOWED_ORIGIN || 'http://localhost:5173')
+  const configuredOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
