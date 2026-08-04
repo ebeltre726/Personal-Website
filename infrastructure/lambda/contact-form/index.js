@@ -3,7 +3,12 @@ const { SSMClient, GetParameterCommand } = require('@aws-sdk/client-ssm');
 const ssmClient = new SSMClient({});
 let privateKeyCache = null;
 
-const REQUIRED_ENV_VARS = ['EMAILJS_SERVICE_ID', 'EMAILJS_TEMPLATE_ID', 'EMAILJS_PUBLIC_KEY', 'ALLOWED_ORIGINS'];
+const REQUIRED_ENV_VARS = [
+  'EMAILJS_SERVICE_ID',
+  'EMAILJS_TEMPLATE_ID',
+  'EMAILJS_PUBLIC_KEY',
+  'ALLOWED_ORIGINS',
+];
 
 function validateRequiredEnvironment() {
   const missing = REQUIRED_ENV_VARS.filter((name) => !process.env[name]);
@@ -13,7 +18,9 @@ function validateRequiredEnvironment() {
   }
 
   if (!process.env.EMAILJS_PRIVATE_KEY && !process.env.EMAILJS_PRIVATE_KEY_PARAMETER_NAME) {
-    throw new Error('Missing EmailJS private key configuration. Set EMAILJS_PRIVATE_KEY or EMAILJS_PRIVATE_KEY_PARAMETER_NAME.');
+    throw new Error(
+      'Missing EmailJS private key configuration. Set EMAILJS_PRIVATE_KEY or EMAILJS_PRIVATE_KEY_PARAMETER_NAME.',
+    );
   }
 }
 
@@ -31,14 +38,16 @@ async function getEmailJSPrivateKey() {
 
   const parameterName = process.env.EMAILJS_PRIVATE_KEY_PARAMETER_NAME;
   if (!parameterName) {
-    throw new Error('EMAILJS_PRIVATE_KEY_PARAMETER_NAME is required when EMAILJS_PRIVATE_KEY is not set.');
+    throw new Error(
+      'EMAILJS_PRIVATE_KEY_PARAMETER_NAME is required when EMAILJS_PRIVATE_KEY is not set.',
+    );
   }
 
   const response = await ssmClient.send(
     new GetParameterCommand({
       Name: parameterName,
-      WithDecryption: true
-    })
+      WithDecryption: true,
+    }),
   );
 
   privateKeyCache = response.Parameter?.Value;
@@ -57,9 +66,9 @@ function buildResponse(statusCode, body, origin, headers = {}) {
       'Access-Control-Allow-Headers': 'Content-Type',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Origin': getAllowedOrigin(origin),
-      ...headers
+      ...headers,
     },
-    body: typeof body === 'string' ? body : JSON.stringify(body)
+    body: typeof body === 'string' ? body : JSON.stringify(body),
   };
 }
 
@@ -119,7 +128,7 @@ exports.handler = async (event) => {
     const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         service_id: serviceId,
@@ -130,9 +139,9 @@ exports.handler = async (event) => {
           user_firstname: first,
           user_lastname: last,
           user_email: email,
-          user_message: message
-        }
-      })
+          user_message: message,
+        },
+      }),
     });
 
     if (!response.ok) {
