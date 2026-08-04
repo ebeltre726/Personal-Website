@@ -16,6 +16,12 @@ variable "domain_name" {
   default     = "ebeltre.com"
 }
 
+variable "hostinger_zone_id" {
+  description = "Route53 hosted zone ID for the domain (Hostinger-managed DNS zone)"
+  type        = string
+  default     = ""
+}
+
 variable "emailjs_service_id" {
   description = "EmailJS service ID"
   type        = string

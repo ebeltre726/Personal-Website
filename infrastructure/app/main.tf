@@ -2,11 +2,11 @@ terraform {
   required_version = ">= 1.5.0"
 
   backend "s3" {
-    bucket         = "aws-beltre-portfolio-tfstate"
-    key            = "terraform.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "aws-beltre-portfolio-tf-locks"
-    encrypt        = true
+    bucket       = "aws-beltre-portfolio-tfstate"
+    key          = "terraform.tfstate"
+    region       = "us-east-1"
+    encrypt      = true
+    use_lockfile = true
   }
 
   required_providers {
@@ -30,14 +30,17 @@ provider "aws" {
 }
 
 locals {
-  app_name           = "Personal-Website"
-  bucket_name        = "aws-beltre-portfolio-bucket"
-  origin_id          = "E1PYOLXQ1UD25M"
-  lambda_name        = "sendContactEmail"
-  api_name           = "aws-portfolio-contact-api"
-  project_name       = "portfolio"
-  ssm_parameter_name = "/${local.project_name}/emailjs/private-key"
+  app_name                      = "Personal-Website"
+  bucket_name                   = "aws-beltre-portfolio-bucket"
+  origin_id                     = "E1PYOLXQ1UD25M"
+  lambda_name                   = "sendContactEmail"
+  api_name                      = "aws-portfolio-contact-api"
+  project_name                  = "portfolio"
+  ssm_parameter_name            = "/${local.project_name}/emailjs/private-key"
+  ssm_parameter_placeholder_val = var.emailjs_private_key != "" ? var.emailjs_private_key : "REPLACE_WITH_GHA_SECRET"
 }
+
+data "aws_caller_identity" "current" {}
 
 resource "null_resource" "lambda_dependencies" {
   triggers = {
@@ -93,7 +96,7 @@ resource "aws_s3_bucket_website_configuration" "site" {
   }
 
   error_document {
-    suffix = "error.html"
+    key = "error.html"
   }
 }
 
@@ -156,7 +159,7 @@ resource "aws_cloudfront_distribution" "site" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = var.acm_certificate_arn != "" ? var.acm_certificate_arn : aws_acm_certificate.site[0].arn
+    acm_certificate_arn = aws_acm_certificate.site.arn
 
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
@@ -181,15 +184,7 @@ resource "aws_cloudfront_distribution" "site" {
   }
 }
 
-data "aws_acm_certificate" "site" {
-  domain   = var.domain_name
-  statuses = ["ISSUED"]
-  most_recent = true
-}
-
 resource "aws_acm_certificate" "site" {
-  count = length(data.aws_acm_certificate.site.id) > 0 ? 0 : 1
-
   domain_name       = var.domain_name
   validation_method = "DNS"
 
@@ -203,34 +198,20 @@ resource "aws_acm_certificate" "site" {
   }
 }
 
-resource "aws_route53_record" "cert_validation" {
-  for_each = length(data.aws_acm_certificate.site.id) > 0 ? {} : {
-    for dvo in aws_acm_certificate.site[0].domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      record = dvo.resource_record_value
-      type   = dvo.resource_record_type
-    }
-  }
-
-  zone_id = var.hostinger_zone_id
-  name    = each.value.name
-  type    = each.value.type
-  ttl     = 300
-  records = [each.value.record]
-}
-
 resource "aws_acm_certificate_validation" "site" {
-  count = length(data.aws_acm_certificate.site.id) > 0 ? 0 : 1
-
-  certificate_arn         = aws_acm_certificate.site[0].arn
-  validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
+  certificate_arn         = aws_acm_certificate.site.arn
+  validation_record_fqdns = []
 }
 
 resource "aws_ssm_parameter" "emailjs_private_key" {
   name        = local.ssm_parameter_name
   description = "EmailJS private key for the contact form Lambda"
   type        = "SecureString"
-  value       = var.emailjs_private_key
+  value       = local.ssm_parameter_placeholder_val
+
+  lifecycle {
+    ignore_changes = [value]
+  }
 
   tags = {
     Environment = var.environment
@@ -243,7 +224,7 @@ resource "aws_lambda_function" "contact_form" {
   function_name    = local.lambda_name
   role             = aws_iam_role.lambda_exec.arn
   handler          = "index.handler"
-  runtime          = "nodejs20.x"
+  runtime          = "nodejs22.x"
   timeout          = 30
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
@@ -286,9 +267,16 @@ resource "aws_iam_role_policy" "lambda_ssm" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
-        Action = ["ssm:GetParameter"]
+        Effect   = "Allow"
+        Action   = ["ssm:GetParameter"]
         Resource = [aws_ssm_parameter.emailjs_private_key.arn]
+      },
+      {
+        Effect = "Allow"
+        Action = ["kms:Decrypt"]
+        Resource = [
+          "arn:aws:kms:${var.aws_region}:${data.aws_caller_identity.current.account_id}:key/*"
+        ]
       }
     ]
   })
@@ -354,15 +342,4 @@ resource "aws_route53_record" "site_aaaa" {
     zone_id                = aws_cloudfront_distribution.site.hosted_zone_id
     evaluate_target_health = false
   }
-}
-
-resource "aws_s3_object" "site_files" {
-  for_each = fileset("../dist", "**/*")
-
-  bucket = aws_s3_bucket.site.id
-  key    = each.value
-  source = "../dist/${each.value}"
-  etag   = filemd5("../dist/${each.value}")
-
-  content_type = lookup(var.mime_types, regex("\\.([^.]+)$", each.value)[0], "application/octet-stream")
 }
