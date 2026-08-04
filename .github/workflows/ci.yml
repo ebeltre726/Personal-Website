@@ -47,7 +47,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: infra
+        working-directory: infrastructure
 
     steps:
       - name: Checkout code
