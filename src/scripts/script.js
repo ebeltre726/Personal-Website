@@ -49,18 +49,6 @@ document.querySelectorAll('.video-wrapper').forEach((wrapper) => {
     wrapper.addEventListener('keydown', openVideo);
 });
 
-function showSidebar(){
-    const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.add('expanded');
-    sidebar.style.borderLeft = 'solid rgba(0, 0, 0, 1)';
-}
-
-function hideSidebar(){
-    const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.remove('expanded');
-    sidebar.style.borderLeft = 'none';
-}
-
 document.getElementById('contactForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
