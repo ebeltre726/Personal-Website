@@ -170,6 +170,12 @@ resource "aws_iam_role" "terraform_deploy" {
   }
 }
 
+resource "aws_iam_role" "secret_update" {
+  name = "ssm-secret-update-role"
+
+  assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role[0].json
+}
+
 resource "aws_iam_role_policy" "terraform_deploy" {
   count = var.create_github_actions_role && var.github_repository != "" ? 1 : 0
 
@@ -183,6 +189,23 @@ data "aws_iam_role" "existing" {
   name  = var.terraform_deployment_role_name
 }
 
+resource "aws_iam_role_policy" "secret_update" {
+  role = aws_iam_role.secret_update.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:PutParameter"
+        ]
+        Resource = "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/portfolio/emailjs/private-key"
+      }
+    ]
+  })
+}
+
 output "tfstate_bucket_name" {
   value = aws_s3_bucket.tfstate.bucket
 }
@@ -193,6 +216,10 @@ output "terraform_deployment_role_name" {
 
 output "terraform_deployment_role_arn" {
   value = var.create_github_actions_role ? aws_iam_role.terraform_deploy[0].arn : data.aws_iam_role.existing[0].arn
+}
+
+output "secret_update_role_arn" {
+  value = aws_iam_role.secret_update.arn
 }
 
 output "github_oidc_provider_arn" {
