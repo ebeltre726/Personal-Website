@@ -15,7 +15,6 @@ jobs:
 
     env:
       AWS_REGION: us-east-1
-
       TF_VAR_domain_name: ${{ vars.DOMAIN_NAME }}
       TF_VAR_acm_certificate_arn: ${{ vars.ACM_CERTIFICATE_ARN }}
 
@@ -40,26 +39,23 @@ jobs:
         with:
           terraform_version: 1.8.5
 
+      - name: Terraform Format Check
+        working-directory: infrastructure/app
+        run: terraform fmt -check -recursive
+
       - name: Terraform Init
         working-directory: infrastructure/app
         run: terraform init -reconfigure
 
+      - name: Terraform Validate
+        working-directory: infrastructure/app
+        run: terraform validate
+
       - name: Terraform Plan
         working-directory: infrastructure/app
-        run: terraform plan -out=tfplan
+        run: terraform plan
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         working-directory: infrastructure/app
-        run: terraform apply tfplan
-
-      - name: Read Terraform outputs
-        if: github.ref == 'refs/heads/main'
-        working-directory: infrastructure/app
-        run: |
-          echo "TF_SITE_BUCKET_NAME=$(terraform output -raw site_bucket_name)" >> "$GITHUB_ENV"
-
-      - name: Sync site assets to S3
-        if: github.ref == 'refs/heads/main'
-        run: |
-          aws s3 sync dist/ "s3://${TF_SITE_BUCKET_NAME}" --delete
+        run: terraform apply -auto-approve
