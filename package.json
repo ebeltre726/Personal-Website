@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "format": "prettier --write .",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -15,10 +17,10 @@
     "type": "git",
     "url": "git+https://github.com/ebeltre726/Personal-Website.git"
   },
+  "type": "commonjs",
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/ebeltre726/Personal-Website/issues"
   },
@@ -29,7 +31,12 @@
     "@typescript-eslint/parser": "^8.66.0",
     "eslint": "^10.8.0",
     "globals": "^17.9.0",
+    "jest": "^30.4.2",
+    "jets": "^0.15.0",
     "prettier": "^3.9.6",
     "vite": "^8.1.5"
+  },
+  "dependencies": {
+    "@aws-sdk/client-ssm": "^3.1103.0"
   }
 }

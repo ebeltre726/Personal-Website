@@ -16,6 +16,25 @@ export default [
   },
 
   {
+    files: ['jest.config.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+
+  {
+    files: ['**/*.test.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+      },
+    },
+  },
+
+  {
     languageOptions: {
       globals: {
         ...globals.browser,
