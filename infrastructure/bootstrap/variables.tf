@@ -13,7 +13,7 @@ variable "environment" {
 variable "github_repository" {
   description = "GitHub repository in owner/repo format for the OIDC trust policy"
   type        = string
-  default     = "https://github.com/ebeltre726/Personal-Website"
+  default     = "ebeltre726/Personal-Website"
 }
 
 variable "github_branch" {

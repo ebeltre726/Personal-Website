@@ -34,6 +34,15 @@ jobs:
           role-to-assume: ${{ vars.AWS_TERRAFORM_DEPLOY_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Check role variable
+        run: |
+          if [ -z "${{ vars.AWS_TERRAFORM_DEPLOY_ROLE_ARN }}" ]; then
+            echo "AWS_TERRAFORM_DEPLOY_ROLE_ARN is empty"
+            exit 1
+          else
+            echo "AWS_TERRAFORM_DEPLOY_ROLE_ARN is configured"
+          fi
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
