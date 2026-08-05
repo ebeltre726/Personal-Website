@@ -11,10 +11,7 @@ const setupEnvironment = () => {
   process.env.ALLOWED_ORIGINS = 'http://localhost:5173';
 };
 
-const createEvent = ({
-  email = 'john@example.com',
-  origin = 'http://localhost:5173',
-} = {}) => ({
+const createEvent = ({ email = 'john@example.com', origin = 'http://localhost:5173' } = {}) => ({
   httpMethod: 'POST',
   body: JSON.stringify({
     first: 'John',
@@ -26,7 +23,6 @@ const createEvent = ({
     origin,
   },
 });
-
 
 describe('Contact Form Lambda', () => {
   let handler;
@@ -55,7 +51,6 @@ describe('Contact Form Lambda', () => {
     handler = require('./index.js').handler;
   });
 
-
   afterEach(() => {
     jest.clearAllMocks();
 
@@ -65,7 +60,6 @@ describe('Contact Form Lambda', () => {
     delete process.env.EMAILJS_PRIVATE_KEY;
     delete process.env.ALLOWED_ORIGINS;
   });
-
 
   test('should handle valid form submission', async () => {
     const result = await handler(createEvent());
@@ -85,7 +79,6 @@ describe('Contact Form Lambda', () => {
     );
   });
 
-
   test('should return 400 for invalid email', async () => {
     const result = await handler(
       createEvent({
@@ -102,15 +95,12 @@ describe('Contact Form Lambda', () => {
     expect(global.fetch).not.toHaveBeenCalled();
   });
 
-
   test('should throw when required environment variables are missing', () => {
     delete process.env.EMAILJS_SERVICE_ID;
 
     expect(() => {
       jest.resetModules();
       require('./index.js');
-    }).toThrow(
-      'Missing required environment variables: EMAILJS_SERVICE_ID',
-    );
+    }).toThrow('Missing required environment variables: EMAILJS_SERVICE_ID');
   });
 });

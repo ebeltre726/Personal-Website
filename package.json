@@ -7,9 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "jest",
     "test:watch": "jest --watch",
-    "format:check": "prettier --check .",
     "lint": "eslint .",
     "preview": "vite preview"
   },
