@@ -1,0 +1,41 @@
+{
+  "name": "personal-website",
+  "version": "1.0.0",
+  "description": "Second attempt at Personal Professional Website, aimed at ease of code editing, neatness and following best practices.",
+  "main": "script.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ebeltre726/Personal-Website.git"
+  },
+  "type": "commonjs",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ebeltre726/Personal-Website/issues"
+  },
+  "homepage": "https://github.com/ebeltre726/Personal-Website#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.66.0",
+    "@typescript-eslint/parser": "^8.66.0",
+    "eslint": "^10.8.0",
+    "globals": "^17.9.0",
+    "jest": "^30.4.2",
+    "prettier": "^3.9.6",
+    "vite": "^8.1.5"
+  },
+  "dependencies": {
+    "@aws-sdk/client-ssm": "^3.1103.0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "aws-portfolio-contact-api",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-ssm": "^3.621.0"
+  }
+}
