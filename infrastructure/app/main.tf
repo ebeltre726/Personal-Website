@@ -145,7 +145,7 @@ resource "aws_cloudfront_distribution" "site" {
     origin_access_control_id = aws_cloudfront_origin_access_control.site.id
 
     s3_origin_config {
-        origin_access_identity = ""
+      origin_access_identity = ""
     }
   }
 
