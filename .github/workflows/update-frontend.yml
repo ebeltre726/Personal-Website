@@ -1,12 +1,12 @@
 name: Update Frontend
 
 on:
-  workflow_run:
-    workflows: ['Terraform Deploy']
-    types:
-      - completed
+  push:
     branches:
       - main
+    paths:
+      - 'src/**'
+  workflow_dispatch:
 
 permissions:
   id-token: write
