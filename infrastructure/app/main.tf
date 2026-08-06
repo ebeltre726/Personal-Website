@@ -32,7 +32,7 @@ provider "aws" {
 locals {
   app_name                      = "Personal-Website"
   bucket_name                   = "aws-beltre-portfolio-bucket"
-  origin_id                     = "E1PYOLXQ1UD25M"
+  origin_id                     = "aws-beltre-origin-id"
   lambda_name                   = "sendContactEmail"
   api_name                      = "aws-portfolio-contact-api"
   project_name                  = "portfolio"
@@ -124,8 +124,12 @@ resource "aws_s3_bucket_policy" "site" {
   })
 }
 
-resource "aws_cloudfront_origin_access_identity" "site" {
-  comment = "OAI for ${var.domain_name}"
+resource "aws_cloudfront_origin_access_control" "site" {
+  name                              = "${var.domain_name}-oac"
+  description                       = "OAC for ${var.domain_name}"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
 
 resource "aws_cloudfront_distribution" "site" {
@@ -138,8 +142,10 @@ resource "aws_cloudfront_distribution" "site" {
     domain_name = aws_s3_bucket.site.bucket_regional_domain_name
     origin_id   = local.origin_id
 
+    origin_access_control_id = aws_cloudfront_origin_access_control.site.id
+
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.site.cloudfront_access_identity_path
+        origin_access_identity = ""
     }
   }
 
@@ -296,13 +302,13 @@ resource "aws_apigatewayv2_integration" "contact_form" {
 
 resource "aws_apigatewayv2_route" "contact_form" {
   api_id    = aws_apigatewayv2_api.contact_form.id
-  route_key = "POST /contact"
+  route_key = "POST /sendContactEmail"
   target    = "integrations/${aws_apigatewayv2_integration.contact_form.id}"
 }
 
 resource "aws_apigatewayv2_route" "contact_form_options" {
   api_id    = aws_apigatewayv2_api.contact_form.id
-  route_key = "OPTIONS /contact"
+  route_key = "OPTIONS /sendContactEmail"
   target    = "integrations/${aws_apigatewayv2_integration.contact_form.id}"
 }
 

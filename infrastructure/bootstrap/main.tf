@@ -81,6 +81,7 @@ data "aws_iam_policy_document" "terraform_deploy_permissions" {
       "iam:ListRolePolicies",
       "iam:ListRoles",
       "iam:PassRole",
+      "iam:GetRolePolicy",
       "iam:PutRolePolicy",
       "iam:DeleteRolePolicy",
       "iam:AttachRolePolicy",
