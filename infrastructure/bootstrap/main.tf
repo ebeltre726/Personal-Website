@@ -7,6 +7,15 @@ terraform {
       version = "~> 5.0"
     }
   }
+
+  backend "s3" {
+    bucket       = "aws-beltre-portfolio-tfstate"
+    key          = "bootstrap/terraform.tfstate"
+    region       = "us-east-1"
+    encrypt      = true
+    use_lockfile = true
+  }
+
 }
 
 provider "aws" {
@@ -175,6 +184,11 @@ resource "aws_iam_role" "secret_update" {
   name = "ssm-secret-update-role"
 
   assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role[0].json
+
+  tags = {
+    Environment = var.environment
+    Project     = local.app_name
+  }
 }
 
 resource "aws_iam_role_policy" "terraform_deploy" {
@@ -225,4 +239,12 @@ output "secret_update_role_arn" {
 
 output "github_oidc_provider_arn" {
   value = var.create_github_actions_role && var.github_repository != "" ? aws_iam_openid_connect_provider.github[0].arn : null
+}
+
+output "github_repository" {
+  value = var.github_repository
+}
+
+output "github_branch" {
+  value = var.github_branch
 }

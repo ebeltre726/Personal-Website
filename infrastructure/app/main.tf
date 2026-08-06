@@ -3,7 +3,7 @@ terraform {
 
   backend "s3" {
     bucket       = "aws-beltre-portfolio-tfstate"
-    key          = "terraform.tfstate"
+    key          = "app/terraform.tfstate"
     region       = "us-east-1"
     encrypt      = true
     use_lockfile = true
@@ -18,6 +18,10 @@ terraform {
       source  = "hashicorp/archive"
       version = "~> 2.0"
     }
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.0"
+    }
     null = {
       source  = "hashicorp/null"
       version = "~> 3.0"
@@ -29,6 +33,10 @@ provider "aws" {
   region = var.aws_region
 }
 
+provider "github" {
+  owner = "ebeltre726"
+}
+
 locals {
   app_name                      = "Personal-Website"
   bucket_name                   = "aws-beltre-portfolio-bucket"
@@ -36,11 +44,90 @@ locals {
   lambda_name                   = "sendContactEmail"
   api_name                      = "aws-portfolio-contact-api"
   project_name                  = "portfolio"
+  frontend_deploy_role_name     = "${local.app_name}-frontend-deploy"
+  github_oidc_provider_arn      = data.terraform_remote_state.bootstrap.outputs.github_oidc_provider_arn
+  github_repository             = data.terraform_remote_state.bootstrap.outputs.github_repository
+  github_branch                 = data.terraform_remote_state.bootstrap.outputs.github_branch
   ssm_parameter_name            = "/${local.project_name}/emailjs/private-key"
   ssm_parameter_placeholder_val = var.emailjs_private_key != "" ? var.emailjs_private_key : "REPLACE_WITH_GHA_SECRET"
 }
 
 data "aws_caller_identity" "current" {}
+
+data "terraform_remote_state" "bootstrap" {
+  backend = "s3"
+
+  config = {
+    bucket = "aws-beltre-portfolio-tfstate"
+    key    = "bootstrap/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
+data "aws_iam_policy_document" "github_actions_assume_role" {
+
+  statement {
+    actions = [
+      "sts:AssumeRoleWithWebIdentity"
+    ]
+
+    effect = "Allow"
+
+    principals {
+      type = "Federated"
+
+      identifiers = [
+        local.github_oidc_provider_arn
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+
+      values = [
+        "sts.amazonaws.com"
+      ]
+    }
+
+    condition {
+      test = "StringLike"
+
+      variable = "token.actions.githubusercontent.com:sub"
+
+      values = [
+        "repo:${local.github_repository}:ref:refs/heads/${local.github_branch}"
+      ]
+    }
+  }
+}
+
+resource "github_actions_variable" "frontend_role_arn" {
+  repository = local.github_repository
+
+  variable_name = "FRONTEND_DEPLOY_ROLE_ARN"
+  value         = aws_iam_role.frontend_deploy.arn
+}
+
+resource "github_actions_variable" "site_bucket_name" {
+  repository = local.github_repository
+
+  variable_name = "FRONTEND_BUCKET_NAME"
+  value         = aws_s3_bucket.site.bucket
+}
+
+resource "github_actions_variable" "cloudfront_distribution_id" {
+  repository = "Personal-Website"
+
+  variable_name = "CLOUDFRONT_DISTRIBUTION_ID"
+  value         = aws_cloudfront_distribution.site.id
+}
+
+resource "aws_iam_role" "frontend_deploy" {
+  name = local.frontend_deploy_role_name
+
+  assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role.json
+}
 
 resource "null_resource" "lambda_dependencies" {
   triggers = {
@@ -257,6 +344,52 @@ resource "aws_iam_role" "lambda_exec" {
       }
       Effect = "Allow"
     }]
+  })
+}
+
+resource "aws_iam_role_policy" "frontend_deploy" {
+  name = "frontend-deploy-policy"
+  role = aws_iam_role.frontend_deploy.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Action = [
+          "s3:ListBucket"
+        ]
+
+        Resource = [
+          aws_s3_bucket.site.arn
+        ]
+      },
+      {
+        Effect = "Allow"
+
+        Action = [
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ]
+
+        Resource = [
+          "${aws_s3_bucket.site.arn}/*"
+        ]
+      },
+      {
+        Effect = "Allow"
+
+        Action = [
+          "cloudfront:CreateInvalidation"
+        ]
+
+        Resource = [
+          aws_cloudfront_distribution.site.arn
+        ]
+      }
+    ]
   })
 }
 
