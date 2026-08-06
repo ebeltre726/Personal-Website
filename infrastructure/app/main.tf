@@ -103,14 +103,14 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
 }
 
 resource "github_actions_variable" "frontend_role_arn" {
-  repository = local.github_repository
+  repository = "Personal-Website"
 
   variable_name = "FRONTEND_DEPLOY_ROLE_ARN"
   value         = aws_iam_role.frontend_deploy.arn
 }
 
 resource "github_actions_variable" "site_bucket_name" {
-  repository = local.github_repository
+  repository = "Personal-Website"
 
   variable_name = "FRONTEND_BUCKET_NAME"
   value         = aws_s3_bucket.site.bucket
