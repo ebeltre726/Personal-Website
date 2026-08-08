@@ -13,42 +13,40 @@
   </head>
   <body>
     <section id="home">
-      <div class="hero-portrait-wrap">
-        <div class="hero-portrait-shell">
-          <img
-            class="hero-portrait"
-            src="./assets/portrait1.png"
-            alt="Portrait of Emmanuel Beltre"
-          />
-        </div>
-      </div>
       <div class="homeContainer">
-        <span class="homeName">Emmanuel Beltre</span>
-        <span class="homeLabels"
-          >System Administration · Cloud Computing · AI/Machine Learning</span
-        >
-        <a href="#work" id="viewWork">View My Work</a>
-        <ul class="socialswrap">
-          <li>
-            <a href="https://x.com/emman726" target="_blank" rel="noopener noreferrer">
-              <img src="./assets/xicon.png" alt="X (Twitter)" />
-            </a>
-          </li>
-          <li>
-            <a href="https://www.github.com/ebeltre726" target="_blank" rel="noopener noreferrer">
-              <img src="./assets/github.png" alt="GitHub" />
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.linkedin.com/in/emmanuel-beltre-27a1a8210/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src="./assets/linkedin.png" alt="LinkedIn" />
-            </a>
-          </li>
-        </ul>
+        <div class="hero-portrait-wrap">
+          <div class="hero-portrait-shell">
+            <img class="hero-portrait" src="./assets/portrait1.png" alt="My Portrait" />
+          </div>
+        </div>
+        <div class="descContainer">
+          <span class="homeName">Emmanuel Beltre</span>
+          <span class="homeLabels"
+            >System Administration · Cloud Computing · AI/Machine Learning</span
+          >
+          <a href="#work" id="viewWork">View My Work</a>
+          <ul class="socialswrap">
+            <li>
+              <a href="https://x.com/emman726" target="_blank" rel="noopener noreferrer">
+                <img src="./assets/xicon.png" alt="X (Twitter)" />
+              </a>
+            </li>
+            <li>
+              <a href="https://www.github.com/ebeltre726" target="_blank" rel="noopener noreferrer">
+                <img src="./assets/github.png" alt="GitHub" />
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com/in/emmanuel-beltre-27a1a8210/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="./assets/linkedin.png" alt="LinkedIn" />
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
     <section class="work-section" id="work" aria-label="My Work">
@@ -57,18 +55,14 @@
         <h2 class="work-title">My Work</h2>
         <p class="work-subtitle">
           Walkthroughs of real deployments and architecture decisions, trade-offs, and lessons
-          learned in production.
+          learned in production as well as some self-taught experiences.
         </p>
         <div class="work-divider"></div>
       </div>
       <div class="work-grid">
         <article class="project-card stagger-1">
           <div class="video-wrapper" data-video-id="4QDxgMf4Fq8">
-            <img
-              class="video-thumbnail"
-              src="./assets/portfolio-thumbnail.jpg"
-              alt="Project thumbnail"
-            />
+            <img class="video-thumbnail" src="./assets/portfolio.png" alt="Project thumbnail" />
             <div class="play-btn" aria-label="Play video">
               <div class="play-circle">
                 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -93,18 +87,24 @@
             <div class="card-tags">
               <span class="tag">S3</span>
               <span class="tag">CloudFront</span>
+              <span class="tag">Terraform</span>
+              <span class="tag">CI/CD</span>
               <span class="tag">Lambda</span>
               <span class="tag">API Gateway</span>
               <span class="tag">EmailJS</span>
             </div>
-            <h3 class="card-title">Portfolio Serverless App</h3>
+            <h3 class="card-title">Serverless Portfolio Web App</h3>
             <p class="card-desc">
               Built a globally distributed portfolio website hosted on S3 and CloudFront with a
-              serverless contact system using API Gateway and Lambda. Lambda integrates with EmailJS
-              to send messages directly to Gmail.
+              serverless contact system using API Gateway and Lambda. Upgraded the architecture by
+              including a CI/CD pipeline using GitHub Actions with Terraform.
             </p>
             <div class="card-footer">
-              <a class="btn-github" href="#" aria-label="View source on GitHub">
+              <a
+                class="btn-github"
+                href="https://github.com/ebeltre726/Personal-Website"
+                aria-label="View source on GitHub"
+              >
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.23 1.84 1.23 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013.01-.4c1.02 0 2.05.14 3.01.4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"
@@ -117,11 +117,7 @@
         </article>
         <article class="project-card stagger-2">
           <div class="video-wrapper" data-video-id="4QDxgMf4Fq8">
-            <img
-              class="video-thumbnail"
-              src="./assets/ecommerce-thumbnail.jpg"
-              alt="Project thumbnail"
-            />
+            <img class="video-thumbnail" src="./assets/furnitria.png" alt="Project thumbnail" />
             <div class="play-btn" aria-label="Play video">
               <div class="play-circle">
                 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -147,7 +143,10 @@
               <span class="tag">DynamoDB</span>
               <span class="tag">Lambda</span>
               <span class="tag">S3</span>
+              <span class="tag">Cognito</span>
               <span class="tag">CloudFront</span>
+              <span class="tag">EventBridge</span>
+              <span class="tag">SES</span>
             </div>
             <h3 class="card-title">Serverless e-Commerce System</h3>
             <p class="card-desc">
@@ -156,7 +155,11 @@
               CloudFront.
             </p>
             <div class="card-footer">
-              <a class="btn-github" href="#" aria-label="View source on GitHub">
+              <a
+                class="btn-github"
+                href="https://github.com/ebeltre726/mock_eCommerce"
+                aria-label="View source on GitHub"
+              >
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.23 1.84 1.23 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013.01-.4c1.02 0 2.05.14 3.01.4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"
@@ -169,11 +172,7 @@
         </article>
         <article class="project-card stagger-3">
           <div class="video-wrapper" data-video-id="4QDxgMf4Fq8">
-            <img
-              class="video-thumbnail"
-              src="./assets/flagship-thumbnail.jpg"
-              alt="Project thumbnail"
-            />
+            <img class="video-thumbnail" src="./assets/furnitria.png" alt="Project thumbnail" />
             <div class="play-btn" aria-label="Play video">
               <div class="play-circle">
                 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -197,10 +196,12 @@
           <div class="card-body">
             <div class="card-tags">
               <span class="tag">Multi-AZ</span>
-              <span class="tag">DR</span>
-              <span class="tag">Security</span>
+              <span class="tag">Pilot Light DR</span>
+              <span class="tag">WAF</span>
               <span class="tag">IAM</span>
-              <span class="tag">Load Balancing</span>
+              <span class="tag">Step Functions</span>
+              <span class="tag">Terraform</span>
+              <span class="tag">VPC</span>
             </div>
             <h3 class="card-title">Enterprise AWS Architecture(Flagship)</h3>
             <p class="card-desc">
