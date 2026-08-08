@@ -107,6 +107,9 @@ header {
   min-height: 100vh;
   margin: auto;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem -25vh;
 
   background:
     radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.12) 0%, transparent 35%),
@@ -129,11 +132,17 @@ header {
   background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08), transparent 40%);
 }
 
+.homeContainer {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  gap: 25px;
+}
+
 .hero-portrait-wrap {
-  position: absolute;
-  bottom: 280px;
+  position: relative;
   left: 50%;
-  transform: translateX(-50%) translateY(20px);
+  transform: translateX(-50%);
   opacity: 0;
   transition:
     opacity 0.8s ease,
@@ -152,6 +161,7 @@ header {
   aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
+  margin: auto;
 
   border: 2px solid rgba(255, 255, 255, 0.55);
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
@@ -166,20 +176,17 @@ header {
   display: block;
   position: relative;
   z-index: 1;
-
   filter: grayscale(100%) contrast(1.05);
 }
 
-.homeContainer {
+.descContainer {
   display: flex;
   flex-direction: column;
   text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.7);
   justify-content: center;
   align-items: center;
-  position: absolute;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  bottom: auto;
   gap: 5px;
 }
 
@@ -934,63 +941,20 @@ section.visible {
 
 /* FOOTER */
 
-/* MEDIA QUERIES */
-@media (max-width: 450px) {
-  .homeName {
-    font-size: 1.5rem;
-  }
-
-  #viewWork {
-    font-size: 0.7rem;
-  }
-
-  .socialswrap {
-    gap: 0.75rem;
-    bottom: 320px;
-  }
-
-  .socialswrap img {
-    width: 2rem;
-    height: 2rem;
-  }
-
-  .imageContainer {
-    width: 21rem;
-  }
-
-  .work-grid {
-    gap: 4rem;
-  }
-
-  .prof-card {
-    max-width: 95%;
-  }
-
-  .prof-section {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-
-  .contactContainer {
-    width: 20rem;
-  }
-
-  .profTable {
-    width: 20rem;
-  }
-
-  footer {
-    width: 18rem;
+/* MOBILE / TABLET */
+@media (max-width: 1500px) {
+  #home {
+    padding: 0 1rem 25vh;
   }
 }
 
 @media (max-width: 768px) {
-  .homeContainer {
-    bottom: 400px;
+  .descContainer {
+    bottom: auto;
   }
 
   .hero-portrait-wrap {
-    bottom: 550px;
+    bottom: auto;
   }
 
   .homeLabels {
@@ -1010,8 +974,8 @@ section.visible {
   }
 
   .prof-card {
-    max-width: 20rem;
     width: 95%;
+    max-width: 20rem;
     margin: auto;
   }
 
@@ -1021,105 +985,70 @@ section.visible {
 
   .prof-section {
     width: 100%;
+    max-width: 100%;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
   }
 
   .sidebar li {
-    flex-direction: column;
-    padding-left: 3vh;
-    padding-top: 10vh;
-    text-align: left;
     display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    text-align: left;
   }
 
   .sidebar a {
     color: var(--dimmest);
     font-weight: 600;
   }
-}
-
-@media (min-width: 1200px) {
-  .homeWrapper {
-    display: flex;
-    flex-direction: row;
-    width: 90%;
-    margin: auto;
-  }
-
-  .homeName {
-    font-size: 3rem;
-  }
-
-  .hero-portrait-wrap {
-    bottom: 350px;
-  }
-
-  .hero-portrait-shell,
-  .hero-portrait-wrap {
-    width: 400px;
-  }
-
-  .homeLabels {
-    font-size: 1.25rem;
-  }
-
-  #viewWork {
-    font-size: 1.25rem;
-  }
-
-  .socialswrap {
-    gap: 3rem;
-    bottom: 300px;
-  }
-
-  .socialswrap img {
-    width: 3rem;
-    height: 3rem;
-  }
 
   .imageContainer {
-    width: 45%;
-    margin: 0 0;
-    margin-bottom: 0;
-  }
-
-  .homeDesc {
-    width: 45%;
-    font-size: 1.8rem;
-    margin: 0;
-  }
-
-  .profTable {
-    max-width: 525px;
+    width: 100%;
+    max-width: 21rem;
+    box-sizing: border-box;
   }
 
   .contactContainer {
-    max-width: 30rem;
+    width: 100%;
+    max-width: 20rem;
+    box-sizing: border-box;
   }
 
-  #contactForm {
-    gap: 0.5rem;
-    margin: 0 3rem;
+  .profTable {
+    width: 100%;
+    max-width: 20rem;
+    box-sizing: border-box;
   }
 
-  input {
-    margin-bottom: 2rem;
-  }
-
-  textarea {
-    height: 10rem;
+  footer {
+    width: 100%;
+    max-width: 18rem;
+    box-sizing: border-box;
   }
 }
 
-@media (min-width: 1500px) {
-  .homeDesc {
-    font-size: 2.5rem;
-  }
-  .descHeader {
-    font-size: x-large;
+/* SMALL PHONES */
+@media (max-width: 450px) {
+  .homeName {
+    font-size: 1.5rem;
   }
 
-  .desc {
-    font-size: medium;
+  #viewWork {
+    font-size: 0.7rem;
+  }
+
+  .socialswrap {
+    gap: 0.75rem;
+  }
+
+  .socialswrap img {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .work-grid {
+    gap: 2rem;
   }
 }
 

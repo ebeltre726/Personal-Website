@@ -1,55 +1,47 @@
-# Personal Website
+# Personal-Website Project Structure
 
-Second attempt at a personal professional website, aimed at ease of code editing, neatness, and following best practices.
+## 🧱 Architecture Overview
 
-## Goal
+### 📦 Frontend
 
-Create a mobile-first professional portfolio website with minimal functionality that can be showcased to future employers, while allowing for future design and functionality expansion.
+- Built with Vite (`vite.config.js`)
+- JavaScript-based with Jest testing setup (`jest.config.js`, `package.json`)
+- No explicit AWS SDK dependencies detected in frontend code
 
-## Progress
-
-The website is created and public, and future updates aim to improve CSS responsiveness and expand the projects section with YouTube or GitHub content, along with the implementation of Terraform for CI/CD deployments.
-
-## Terraform deployment
-
-This repository now includes a Terraform-based deployment setup for:
+### 🧱 Infrastructure
 
 - My S3-hosted static website
 - My CloudFront CDN distribution
 - My Lambda-backed API Gateway endpoint for the contact form
 - ACM certificate support for my domain
 - GitHub Actions-based CI/CD deployment
+- Contains AWS Lambda function for contact form handling:
+- `infrastructure/lambda/contact-form/index.js` (handler file)
+- `infrastructure/lambda/contact-form/index.test.js` (unit tests)
+- `infrastructure/lambda/contact-form/package.json` (runtime dependencies)
 
-### Infrastructure layout
+### 📋 Workflows
 
-- infra/main.tf - core Terraform resources
-- infra/variables.tf - configurable inputs
-- infra/outputs.tf - outputs for deployment values
-- infra/lambda/contact-form/index.js - Lambda handler for the contact form
-- .github/workflows/terraform.yml - GitHub Actions workflow
+- The deploy-frontend workflow assumes a frontend role and syncs the frontend
+  ./src/* directory and it's contents to the S3 bucket
 
-### Required GitHub variables
+## 🌐 AWS Integration Insights
 
-Set these in GitHub repository settings -> Secrets and variables -> Actions -> Variables:
+### ⚙️ AWS Lambda
 
-- DOMAIN_NAME
-- HOSTINGER_ZONE_ID
-- EMAILJS_SERVICE_ID
-- EMAILJS_TEMPLATE_ID
-- EMAILJS_PUBLIC_KEY
-- AWS_PORTFOLIO_ROLE
+- Contact form handler is structured as a Lambda function
+- Likely deployed via Serverless Framework (pattern inferred)
 
-### Notes
+### 🛠️ API Gateway
 
-- The GitHub Actions workflow assumes an AWS role using OIDC.
-- The Terraform configuration expects the domain to be managed through Route 53 or a delegated zone that Route 53 can update.
-- Because DNS is currently hosted at Hostinger, you will need to create the ACM validation records and configure the domain records through Hostinger or a delegated DNS zone.
+- Implied by Lambda function structure (common pattern for HTTP API triggers)
 
-### Terraform commands
+### 📁 S3 (Potential)
 
-```bash
-cd infra
-terraform init
-terraform plan
-terraform apply
-```
+- No direct references, but Lambda-based file processing workflows often integrate with S3
+
+## ⚠️ Notes
+
+- No explicit AWS SDK imports found in code files
+- No CloudFormation templates or Serverless configuration files detected
+- Infrastructure folder suggests AWS deployment pipeline exists but is not visible in current file list
