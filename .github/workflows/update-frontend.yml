@@ -25,17 +25,32 @@ jobs:
         with:
           node-version: 24
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build frontend
-        run: npm run build
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ vars.FRONTEND_DEPLOY_ROLE_ARN }}
           aws-region: us-east-1
+
+      - name: Initialize Terraform
+        working-directory: infrastructure/app
+        run: terraform init
+
+      - name: Get frontend API URL
+        id: terraform
+        working-directory: infrastructure/app
+        run: |
+          echo "frontend_api_url=$(terraform output -raw frontend_api_url)" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend
+        env:
+          VITE_API_URL: ${{ steps.terraform.outputs.frontend_api_url }}
+        run: npm run build
 
       - name: Sync frontend to S3
         run: |
