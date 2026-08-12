@@ -389,6 +389,37 @@ resource "aws_iam_role_policy" "frontend_deploy" {
         Resource = [
           aws_cloudfront_distribution.site.arn
         ]
+      },
+      {
+        "Sid" : "ReadTerraformStateBucket",
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:ListBucket"
+        ],
+        "Resource" : "arn:aws:s3:::aws-beltre-portfolio-tfstate/app/terraform.tfstate",
+        "Condition" : {
+          "StringLike" : {
+            "s3:prefix" : [
+              "app/*"
+            ]
+          }
+        }
+      },
+      {
+        "Sid" : "ReadTerraformState",
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:GetObject"
+        ],
+        "Resource" : "arn:aws:s3:::tfstate-bucket/app/terraform.tfstate"
+      },
+      {
+        "Sid" : "TerraformStateObjectRead",
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:GetObject"
+        ],
+        "Resource" : "arn:aws:s3:::aws-beltre-portfolio-tfstate/app/terraform.tfstate"
       }
     ]
   })
