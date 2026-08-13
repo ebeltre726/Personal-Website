@@ -45,7 +45,7 @@ locals {
   api_name                      = "aws-portfolio-contact-api"
   project_name                  = "portfolio"
   frontend_deploy_role_name     = "${local.app_name}-frontend-deploy"
-  frontend_api_url              = "${aws_apigatewayv2_api.contact_form.api_endpoint}/sendContactEmail"
+  api_gateway_url               = "${aws_apigatewayv2_api.contact_form.api_endpoint}/sendContactEmail"
   github_oidc_provider_arn      = data.terraform_remote_state.bootstrap.outputs.github_oidc_provider_arn
   github_repository             = data.terraform_remote_state.bootstrap.outputs.github_repository
   github_branch                 = data.terraform_remote_state.bootstrap.outputs.github_branch
