@@ -49,8 +49,12 @@ variable "emailjs_private_key" {
 
 variable "allowed_origins" {
   description = "Allowed origins for Lambda CORS responses"
-  type        = string
-  default     = "https://ebeltre.com,https://www.ebeltre.com"
+  type        = set(string)
+
+  default = [
+    "https://ebeltre.com",
+    "https://www.ebeltre.com"
+  ]
 }
 
 variable "acm_certificate_arn" {
