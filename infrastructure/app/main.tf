@@ -481,6 +481,21 @@ resource "aws_apigatewayv2_stage" "contact_form" {
   api_id      = aws_apigatewayv2_api.contact_form.id
   name        = "$default"
   auto_deploy = true
+
+  cors_configuration {
+    allow_origins = var.ALLOWED_ORIGINS
+
+    allow_methods = [
+      "POST",
+      "OPTIONS"
+    ]
+
+    max_age = 3000
+
+    allow_headers = [
+      "content-type"
+    ]
+  }
 }
 
 resource "aws_lambda_permission" "apigw" {
