@@ -10,6 +10,6 @@ output "frontend_deploy_role_arn" {
   value = aws_iam_role.frontend_deploy.arn
 }
 
-output "api_gateway_url" {
-  value = local.frontend_api_url
+output "frontend_api_url" {
+  value = local.api_gateway_url
 }
