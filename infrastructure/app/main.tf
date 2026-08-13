@@ -328,7 +328,7 @@ resource "aws_lambda_function" "contact_form" {
       EMAILJS_TEMPLATE_ID                = var.emailjs_template_id
       EMAILJS_PUBLIC_KEY                 = var.emailjs_public_key
       EMAILJS_PRIVATE_KEY_PARAMETER_NAME = aws_ssm_parameter.emailjs_private_key.name
-      ALLOWED_ORIGINS                    = var.allowed_origins
+      ALLOWED_ORIGINS                    = join(",", var.allowed_origins)
     }
   }
 }
@@ -456,6 +456,21 @@ resource "aws_iam_role_policy" "lambda_ssm" {
 resource "aws_apigatewayv2_api" "contact_form" {
   name          = local.api_name
   protocol_type = "HTTP"
+
+  cors_configuration {
+    allow_origins = var.allowed_origins
+
+    allow_methods = [
+      "POST",
+      "OPTIONS"
+    ]
+
+    max_age = 3000
+
+    allow_headers = [
+      "content-type"
+    ]
+  }
 }
 
 resource "aws_apigatewayv2_integration" "contact_form" {
@@ -481,21 +496,6 @@ resource "aws_apigatewayv2_stage" "contact_form" {
   api_id      = aws_apigatewayv2_api.contact_form.id
   name        = "$default"
   auto_deploy = true
-
-  cors_configuration {
-    allow_origins = var.ALLOWED_ORIGINS
-
-    allow_methods = [
-      "POST",
-      "OPTIONS"
-    ]
-
-    max_age = 3000
-
-    allow_headers = [
-      "content-type"
-    ]
-  }
 }
 
 resource "aws_lambda_permission" "apigw" {
