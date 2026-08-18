@@ -54,13 +54,13 @@ jobs:
       - name: Terraform version
         run: terraform version
 
-      - name: Terraform providers
-        working-directory: infrastructure/app
-        run: terraform providers
-
       - name: Terraform Init
         working-directory: infrastructure/app
         run: terraform init -reconfigure
+
+      - name: Terraform providers
+        working-directory: infrastructure/app
+        run: terraform providers
 
       - name: Terraform Validate
         working-directory: infrastructure/app
