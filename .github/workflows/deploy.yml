@@ -21,7 +21,6 @@ jobs:
       TF_VAR_emailjs_template_id: ${{ vars.EMAILJS_TEMPLATE_ID }}
       TF_VAR_emailjs_public_key: ${{ vars.EMAILJS_PUBLIC_KEY }}
       TF_VAR_emailjs_private_key: ${{ secrets.EMAILJS_PRIVATE_KEY }}
-      TF_VAR_allowed_origins: ${{ vars.ALLOWED_ORIGINS }}
       GITHUB_TOKEN: ${{ secrets.PORTFOLIO_GITHUB_TOKEN }}
 
     steps:
