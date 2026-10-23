@@ -224,7 +224,7 @@ resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
-  aliases             = var.domain_name != "" ? [var.domain_name] : []
+  aliases             = var.domain_name != "" ? [var.domain_name, "www.${var.domain_name}"] : []
 
   origin {
     domain_name = aws_s3_bucket.site.bucket_regional_domain_name
@@ -253,7 +253,7 @@ resource "aws_cloudfront_distribution" "site" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = aws_acm_certificate.site.arn
+    acm_certificate_arn = aws_acm_certificate_validation.site.certificate_arn
 
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
@@ -279,8 +279,9 @@ resource "aws_cloudfront_distribution" "site" {
 }
 
 resource "aws_acm_certificate" "site" {
-  domain_name       = var.domain_name
-  validation_method = "DNS"
+  domain_name               = var.domain_name
+  subject_alternative_names = ["www.${var.domain_name}"]
+  validation_method         = "DNS"
 
   lifecycle {
     create_before_destroy = true
@@ -295,6 +296,10 @@ resource "aws_acm_certificate" "site" {
 resource "aws_acm_certificate_validation" "site" {
   certificate_arn         = aws_acm_certificate.site.arn
   validation_record_fqdns = []
+
+  timeouts {
+    create = "45m"
+  }
 }
 
 resource "aws_ssm_parameter" "emailjs_private_key" {
