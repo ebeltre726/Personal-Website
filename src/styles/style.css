@@ -288,7 +288,7 @@ body {
 /* WORK SECTION */
 .work-section {
   min-height: 100vh;
-  padding: 4rem 1.5rem;
+  padding: 10rem 1.5rem;
   max-width: 1100px;
   margin: auto;
   font-family: var(--nav-font);
@@ -544,7 +544,6 @@ body {
 
 /* PROFICIENCIES SECTION */
 #proficiencies {
-  margin: 8rem 0;
   display: flex;
   justify-content: center;
   min-height: 100vh;
@@ -711,7 +710,6 @@ body {
 /* CONTACT SECTION */
 #contact {
   min-height: 100vh;
-  margin: 15rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -858,7 +856,7 @@ section.visible {
   }
 
   #proficiencies {
-    padding: 0;
+    padding: 0 1.5rem;
   }
 
   .prof-card {
