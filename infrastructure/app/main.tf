@@ -295,7 +295,7 @@ resource "aws_acm_certificate" "site" {
 
 resource "aws_acm_certificate_validation" "site" {
   certificate_arn         = aws_acm_certificate.site.arn
-  validation_record_fqdns = []
+  validation_record_fqdns = [for record in aws_route53_record.acm_validation : record.fqdn]
 
   timeouts {
     create = "45m"
@@ -511,11 +511,41 @@ resource "aws_lambda_permission" "apigw" {
   source_arn    = "${aws_apigatewayv2_api.contact_form.execution_arn}/*/*"
 }
 
-resource "aws_route53_record" "site_a" {
-  count   = var.hostinger_zone_id != "" ? 1 : 0
-  zone_id = var.hostinger_zone_id
+# -----------------------------------------------------------------------------
+# DNS (Route 53)
+#
+# The domain stays registered at Hostinger; only DNS hosting moves to Route 53.
+# After the first apply, copy the `route53_name_servers` output into
+# Hostinger > Domains > ebeltre.com > Nameservers (replacing dns-parking.com).
+# -----------------------------------------------------------------------------
+
+locals {
+  site_hostnames = toset([var.domain_name, "www.${var.domain_name}"])
+}
+
+resource "aws_route53_zone" "site" {
   name    = var.domain_name
+  comment = "Public DNS for ${var.domain_name} (registered at Hostinger)"
+
+  # Recreating the zone assigns new nameservers, which would require updating
+  # Hostinger again and take the site offline until that is done.
+  lifecycle {
+    prevent_destroy = true
+  }
+
+  tags = {
+    Environment = var.environment
+    Project     = local.app_name
+  }
+}
+
+resource "aws_route53_record" "site_a" {
+  for_each = local.site_hostnames
+
+  zone_id = aws_route53_zone.site.zone_id
+  name    = each.value
   type    = "A"
+
   alias {
     name                   = aws_cloudfront_distribution.site.domain_name
     zone_id                = aws_cloudfront_distribution.site.hosted_zone_id
@@ -524,13 +554,33 @@ resource "aws_route53_record" "site_a" {
 }
 
 resource "aws_route53_record" "site_aaaa" {
-  count   = var.hostinger_zone_id != "" ? 1 : 0
-  zone_id = var.hostinger_zone_id
-  name    = var.domain_name
+  for_each = local.site_hostnames
+
+  zone_id = aws_route53_zone.site.zone_id
+  name    = each.value
   type    = "AAAA"
+
   alias {
     name                   = aws_cloudfront_distribution.site.domain_name
     zone_id                = aws_cloudfront_distribution.site.hosted_zone_id
     evaluate_target_health = false
   }
+}
+
+# ACM DNS validation records, so the certificate can keep auto-renewing.
+resource "aws_route53_record" "acm_validation" {
+  for_each = {
+    for dvo in aws_acm_certificate.site.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  zone_id         = aws_route53_zone.site.zone_id
+  name            = each.value.name
+  type            = each.value.type
+  ttl             = 300
+  records         = [each.value.record]
 }
