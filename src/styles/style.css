@@ -27,6 +27,9 @@
   --dimmest: #000000;
 
   --brightest-rgb: 255, 204, 0;
+
+  /* Vertical spacing between sections; scales with screen width */
+  --section-space: clamp(4rem, 3rem + 5vw, 8rem);
 }
 
 * {
@@ -287,8 +290,7 @@ body {
 
 /* WORK SECTION */
 .work-section {
-  min-height: 100vh;
-  padding: 10rem 1.5rem;
+  padding: var(--section-space) 1.5rem;
   max-width: 1100px;
   margin: auto;
   font-family: var(--nav-font);
@@ -546,14 +548,14 @@ body {
 #proficiencies {
   display: flex;
   justify-content: center;
-  min-height: 100vh;
+  padding-block: var(--section-space);
 }
 
 .prof-section {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 48px 32px;
+  padding: 0 32px;
   font-family: 'IBM Plex Mono', monospace;
   height: 100%;
 }
@@ -709,7 +711,7 @@ body {
 
 /* CONTACT SECTION */
 #contact {
-  min-height: 100vh;
+  padding-block: var(--section-space);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -823,6 +825,7 @@ section:last-of-type {
 
 section.visible {
   opacity: 1;
+  transform: none;
 }
 
 /* FOOTER */
@@ -856,7 +859,7 @@ section.visible {
   }
 
   #proficiencies {
-    padding: 0 1.5rem;
+    padding-inline: 1.5rem;
   }
 
   .prof-card {
